@@ -1,5 +1,6 @@
 # toolkit.py
-import argparse, logging
+import argparse
+import logging
 from pathlib import Path
 
 def setup_logging(verbose: bool):
@@ -54,7 +55,6 @@ def main():
     args = parser.parse_args()
 
     setup_logging(args.verbose)
-    logger = logging.getLogger(__name__)
 
     if args.command == 'scan':
         from commands.scan import run

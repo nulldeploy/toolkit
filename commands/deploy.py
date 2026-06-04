@@ -1,5 +1,6 @@
 # deploy.py
-import subprocess, logging
+import subprocess
+import logging
 from pathlib import Path
 
 
@@ -38,7 +39,7 @@ def deploy(path: Path, branch: str, restart: str) -> True:
     if restart:
         try:
             logger.info("[2/3] Restarting service '%s'...", restart)
-            command_restart = subprocess.run(
+            subprocess.run(
                 ['systemctl', 'restart', restart],
                 capture_output=True,
                 text=True,

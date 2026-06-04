@@ -4,7 +4,6 @@ import os
 import time
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
 import psutil
 
 logger = logging.getLogger(__name__)
@@ -51,7 +50,8 @@ def display(result: MonitorResult, output=None) -> None:
     ram_total = result.mem.total / (1024 ** 3)
     disk_free = result.disk.free / (1024 ** 3)
 
-    p = lambda *args, **kwargs: print(*args, **kwargs, file=output)
+    def p(*args, **kwargs):
+        print(*args, **kwargs, file=output)
 
     p(f'\n{"=" * 15} System Monitor {"=" * 15} {now}')
     p()
@@ -92,7 +92,7 @@ def run(args) -> None:
         logger.info('Logging to file: %s', args.log)
         logger.info('Logging to file successful')
         if size_bytes > 1024 * 1024:
-            print(f'%s size: %s MB', args.log, size_mb)
+            logger.info('%s size: %s MB', args.log, size_mb)
         else:
             logger.info('%s size: %s KB', args.log, size_kb)
 
