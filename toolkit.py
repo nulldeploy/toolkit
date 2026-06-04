@@ -45,6 +45,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument('--restart', '-r', type=str, 
                     help='Service name to restart')
 
+    p = subparsers.add_parser('serve', help='Flask start')
+
     return parser
 
 def main():
@@ -65,6 +67,9 @@ def main():
         run(args)
     elif args.command == 'deploy':
         from commands.deploy import run 
+        run(args)
+    elif args.command == 'serve':
+        from commands.serve import run
         run(args)
 
 if __name__ == '__main__':

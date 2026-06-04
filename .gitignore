@@ -1,5 +1,9 @@
 venv/
 toolkit/venv/
-__pycache__
-.pyc 
-.pyo 
+toolkit/__pycache__
+toolkit/commands/__pycache__
+toolkit/*.pyc
+toolkit/*.pyo
+toolkit/commands/*.pyc
+toolkit/commands/*.pyo
+.dockerignore
