@@ -1,5 +1,6 @@
 # serve.py
 from flask import Flask, jsonify
+import os
 import logging
 from commands.monitor import monitor
 
@@ -23,5 +24,6 @@ def health():
 
 def run(args) -> None:
     logger.info('Starting Flask server...')
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('APP_PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
     logger.info('Flask server stopped')
