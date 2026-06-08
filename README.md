@@ -18,7 +18,7 @@ A CLI tool for system administration built with Python. This project demonstrate
 | Web | Nginx (reverse proxy) |
 | CI/CD | GitHub Actions → GHCR → VPS |
 | Orchestration | Kubernetes (Deployment, Service, Ingress) |
-| Automation | Ansible (see [toolkit-infra](https://github.com/nulldeploy/toolkit-infra)) |
+| Automation | Ansible (see [toolkit-infra](https://github.com/nulldeploy/toolkit-infrastructure)) |
 | Monitoring | Prometheus, Grafana, Loki, Alertmanager (see [toolkit-monitoring](https://github.com/nulldeploy/toolkit-monitoring)) |
 
 ---
@@ -170,7 +170,7 @@ toolkit/
 
 **Kubernetes** — Deployment with readiness/liveness probes, Service (ClusterIP), Ingress with host-based routing.
 
-**Ansible** — full deployment automation on a clean VPS: UFW, Docker, nginx, systemd, Node Exporter. One playbook run sets up the entire stack. See [toolkit-infra](https://github.com/nulldeploy/toolkit-infra).
+**Ansible** — full deployment automation on a clean VPS: UFW, Docker, nginx, systemd, Node Exporter. One playbook run sets up the entire stack. See [toolkit-infra](https://github.com/nulldeploy/toolkit-infrastructure).
 
 ---
 
