@@ -5,25 +5,25 @@
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-CLI-инструмент для системного администрирования, написанный на Python. Проект создан как практическая демонстрация полного DevOps-цикла — от локального скрипта до продакшен деплоя с CI/CD, мониторингом и автоматизацией.
+A CLI tool for system administration built with Python. This project demonstrates a full DevOps cycle — from a local script to a production deployment with CI/CD, monitoring, and infrastructure automation.
 
 ---
 
-## Стек
+## Stack
 
-| Слой | Технологии |
-|------|-----------|
-| Приложение | Python 3.12, Flask, psutil |
-| Контейнеризация | Docker (multi-stage), Docker Compose |
-| Веб | Nginx (reverse proxy) |
+| Layer | Technologies |
+|-------|-------------|
+| Application | Python 3.12, Flask, psutil |
+| Containerization | Docker (multi-stage), Docker Compose |
+| Web | Nginx (reverse proxy) |
 | CI/CD | GitHub Actions → GHCR → VPS |
-| Оркестрация | Kubernetes (Deployment, Service, Ingress) |
-| Автоматизация | Ansible (см. [toolkit-infra](https://github.com/nulldeploy/toolkit-infra)) |
-| Мониторинг | Prometheus, Grafana, Loki, Alertmanager (см. [toolkit-monitoring](https://github.com/nulldeploy/toolkit-monitoring)) |
+| Orchestration | Kubernetes (Deployment, Service, Ingress) |
+| Automation | Ansible (see [toolkit-infra](https://github.com/nulldeploy/toolkit-infra)) |
+| Monitoring | Prometheus, Grafana, Loki, Alertmanager (see [toolkit-monitoring](https://github.com/nulldeploy/toolkit-monitoring)) |
 
 ---
 
-## Архитектура
+## Architecture
 
 ```
 git push → GitHub Actions
@@ -47,19 +47,19 @@ git push → GitHub Actions
 
 ---
 
-## Команды
+## Commands
 
-| Команда | Описание |
-|---------|----------|
-| `scan` | Сканирует директорию: статистика, топ N файлов по размеру |
-| `backup` | Создаёт архив директории с автоматической ротацией |
-| `monitor` | Мониторинг CPU, RAM, диска в реальном времени |
-| `deploy` | Git pull + перезапуск systemd сервиса |
-| `serve` | Запускает Flask сервер с `/health` эндпоинтом |
+| Command | Description |
+|---------|-------------|
+| `scan` | Scans a directory: file stats, top N files by size |
+| `backup` | Creates a directory archive with automatic rotation |
+| `monitor` | Real-time CPU, RAM, and disk monitoring |
+| `deploy` | Git pull + systemd service restart |
+| `serve` | Starts a Flask server with `/health` endpoint |
 
 ---
 
-## Быстрый старт
+## Quick Start
 
 ### Docker Compose
 
@@ -71,7 +71,7 @@ docker compose up -d
 curl http://localhost/health
 ```
 
-### Локально
+### Local
 
 ```bash
 pip install -r requirements.txt
@@ -91,34 +91,34 @@ docker run toolkit monitor
 
 ---
 
-## Примеры
+## Usage Examples
 
 ```bash
-# Сканирование с топ 10 файлов в JSON формате
+# Scan with top 10 files in JSON format
 python toolkit.py scan ~/projects --top 10 --format json
 
-# Бэкап в zip с хранением последних 3 архивов
+# Backup to zip, keep last 3 archives
 python toolkit.py backup ~/projects ~/backups --ext zip --keep 3
 
-# Мониторинг с обновлением каждые 5 секунд и логированием
+# Monitor with 5-second interval and file logging
 python toolkit.py monitor --watch 5 --log monitor.log
 
-# Деплой из ветки develop с перезапуском nginx
+# Deploy from develop branch with nginx restart
 python toolkit.py deploy ~/projects --branch develop --restart nginx
 ```
 
 ---
 
-## CI/CD пайплайн
+## CI/CD Pipeline
 
 ```
 push to main
     │
     ├── job: test
-    │     ├── ruff check .        (линтер)
-    │     └── pytest tests/ -v    (тесты)
+    │     ├── ruff check .        (linter)
+    │     └── pytest tests/ -v    (tests)
     │
-    └── job: build (только если test прошёл)
+    └── job: build (runs only if test passed)
           ├── docker build
           ├── push → ghcr.io/nulldeploy/toolkit:sha-xxxxx
           ├── push → ghcr.io/nulldeploy/toolkit:latest
@@ -129,7 +129,7 @@ push to main
 
 ---
 
-## Структура проекта
+## Project Structure
 
 ```
 toolkit/
@@ -160,21 +160,21 @@ toolkit/
 
 ---
 
-## Инфраструктура
+## Infrastructure
 
-**Docker** — multi-stage сборка: зависимости устанавливаются в builder-слое, финальный образ на `python:3.12-slim`. Non-root пользователь, healthcheck через `/health`.
+**Docker** — multi-stage build: dependencies are installed in the builder stage, final image uses `python:3.12-slim`. Non-root user, healthcheck via `/health`.
 
-**Docker Compose** — два сервиса: приложение и nginx как reverse proxy, изолированная Docker-сеть.
+**Docker Compose** — two services: application and nginx as reverse proxy, isolated Docker network.
 
-**GitHub Actions** — линтер `ruff` и тесты на каждый push в `main`. При успехе — сборка образа, пуш в GHCR, автодеплой на VPS через SSH.
+**GitHub Actions** — `ruff` linter and tests on every push to `main`. On success — builds image, pushes to GHCR, auto-deploys to VPS via SSH.
 
-**Kubernetes** — Deployment с readiness/liveness пробами, Service (ClusterIP), Ingress с маршрутизацией по хосту.
+**Kubernetes** — Deployment with readiness/liveness probes, Service (ClusterIP), Ingress with host-based routing.
 
-**Ansible** — полная автоматизация деплоя на чистый VPS: UFW, Docker, nginx, systemd, Node Exporter. Один запуск плейбука разворачивает весь стек. Подробнее: [toolkit-infra](https://github.com/nulldeploy/toolkit-infra).
+**Ansible** — full deployment automation on a clean VPS: UFW, Docker, nginx, systemd, Node Exporter. One playbook run sets up the entire stack. See [toolkit-infra](https://github.com/nulldeploy/toolkit-infra).
 
 ---
 
-## Конфигурация
+## Configuration
 
 ```bash
 cp .env.example .env
@@ -198,11 +198,11 @@ kubectl logs <pod-name>
 
 ---
 
-## systemd (ручной деплой)
+## systemd (manual deploy)
 
 ```bash
 sudo cp toolkit.service.example /etc/systemd/system/toolkit.service
-# отредактируй User и WorkingDirectory
+# edit User and WorkingDirectory
 sudo systemctl daemon-reload
 sudo systemctl enable toolkit
 sudo systemctl start toolkit
